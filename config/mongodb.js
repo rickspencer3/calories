@@ -7,14 +7,42 @@
  https://www.npmjs.com/package/mongoose
 */
 
+console.log('configuring MongoDB: ' + process.env.DATABASE_URL)
+
 var MongoClient = require('mongodb').MongoClient
   , assert = require('assert');
 
 // Connection URL configured in your docker-compose.yml file
 var url = process.env.DATABASE_URL
+var foodsCollectionExists = false;
 
 MongoClient.connect(url, function(err, db) {
   assert.equal(null, err);
   console.log("Connected correctly to MongoDB server");
-  db.close();
+
+  db.listCollections({name: "foods"})
+    .next(function(err, collinfo) {
+        if (collinfo) {
+            console.log("Foods collection found, skipping ...");
+            console.log("Closing database");
+            db.close();
+        }
+        else {
+          console.log("Foods collection not found, adding data ...");
+          db.createCollection("foods", function(err, collection){
+            if(err){
+              console.log(err);
+              db.close();
+            }
+            else {
+              console.log("Inserting data ...");
+              var entries = require('./dev-data').Entries;
+              collection.insertMany(entries, function(err, result) {
+                console.log("Data inserted, closing db");
+                db.close();
+              });
+            }
+          });
+        }
+    });
 });
