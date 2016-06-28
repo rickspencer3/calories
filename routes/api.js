@@ -9,19 +9,19 @@ router.get('/', function(req, res, next) {
 router.get('/foods', function(req, res, next) {
   var results = [];
    if(!req.query.search) {
-     db.findAll( function(documents) {
+     db.Foods.findAll( function(documents) {
        res.send(documents);
      });
    }
    else {
-     db.find(req.query.search, function(documents) {
+     db.Foods.find(req.query.search, function(documents) {
        res.send(documents);
      });
    }
 });
 
 router.get('/foods/:id', function(req, res, next) {
-    db.findById(parseInt(req.params.id), function(documents){
+    db.Foods.findById(parseInt(req.params.id), function(documents){
     if(documents != null) {
       res.send(documents);
     }

@@ -11,7 +11,7 @@ MongoClient.connect(url, function(err, mongo_db) {
   db = mongo_db;
 });
 
-var findById = function(id_term, callback){
+var findFoodById = function(id_term, callback){
   var cursor = db.collection("foods").find({id:id_term});
 
   cursor.toArray(function(err, documents) {
@@ -19,7 +19,7 @@ var findById = function(id_term, callback){
   });
 }
 
-var findAll = function(callback){
+var findAllFoods = function(callback){
   var cursor = db.collection("foods").find();
 
   cursor.toArray(function(err, documents) {
@@ -27,7 +27,7 @@ var findAll = function(callback){
   });
 }
 
-var find = function(term, callback){
+var findFoods = function(term, callback){
   var cursor = db.collection("foods").find({description:new RegExp(term, 'i')});
 
   cursor.toArray(function(err, documents) {
@@ -35,7 +35,10 @@ var find = function(term, callback){
   });
 }
 
+var Foods = {
+  findById:findFoodById,
+  findAll:findAllFoods,
+  find:findFoods
+}
 
-module.exports.findById = findById;
-module.exports.findAll = findAll;
-module.exports.find = find;
+module.exports.Foods = Foods;
