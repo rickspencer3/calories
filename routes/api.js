@@ -33,14 +33,14 @@ router.get('/foods', function(req, res, next) {
 
 //http://192.168.99.100:3000/api/foods/1234
 router.get('/foods/:id', function(req, res, next) {
-  documents = db.findById(parseInt(req.params.id));
-  console.log(documents);
-  if(documents != null) {
-    res.send(documents);
-  }
-  else {
-    //send and error
-  }
+  documents = db.findById(parseInt(req.params.id), function(documents){
+    if(documents != null) {
+      res.send(documents);
+    }
+    else {
+      //send and error
+    }
+  });
 });
 
 module.exports = router;
