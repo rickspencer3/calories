@@ -19,5 +19,23 @@ var findById = function(id_term, callback){
   });
 }
 
+var findAll = function(callback){
+  var cursor = db.collection("foods").find();
+
+  cursor.toArray(function(err, documents) {
+      callback(documents);
+  });
+}
+
+var find = function(term, callback){
+  var cursor = db.collection("foods").find({description:new RegExp(term, 'i')});
+
+  cursor.toArray(function(err, documents) {
+      callback(documents);
+  });
+}
+
 
 module.exports.findById = findById;
+module.exports.findAll = findAll;
+module.exports.find = find;
