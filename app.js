@@ -9,7 +9,6 @@ var routes = require('./routes/index');
 var users = require('./routes/users');
 var api = require('./routes/api');
 
-
 var app = express();
 
 // view engine setup
@@ -28,16 +27,7 @@ app.use('/', routes);
 app.use('/users', users);
 app.use('/api', api);
 
-var MongoClient = require('mongodb').MongoClient
-  , assert = require('assert');
 
-// Connection URL configured in your docker-compose.yml file
-var url = process.env.DATABASE_URL
-
-MongoClient.connect(url, function(err, db) {
-  assert.equal(null, err);
-  global.db = db;
-});
 
 // catch 404 and forward to error handler
 app.use(function(req, res, next) {
